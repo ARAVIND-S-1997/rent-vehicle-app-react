@@ -1,3 +1,3 @@
 // local url:
 
-export const url = "http://localhost:6000/rentvehicles"
+export const apiurl = "http://localhost:6000/rentvehicles"
