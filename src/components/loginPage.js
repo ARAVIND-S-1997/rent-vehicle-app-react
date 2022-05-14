@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 // other file imports
-import { apiurl } from '../apiLink';
+import { apiurl } from '../applicationURL';
 
 // hooks imports
 import { useHistory } from 'react-router-dom';
@@ -23,7 +23,7 @@ const formValidation = yup.object({
 
 
 // login component
-export function Login({settoken}) {
+export function Login({ settoken }) {
 
     // formik functionality
     const { values, errors, touched, handleChange, handleSubmit, handleBlur } = useFormik({
@@ -36,7 +36,7 @@ export function Login({settoken}) {
 
     // login request
     const login = (value) => {
-        axios({ url: `${apiurl}/user/login`, method: "POST", data: value })
+        axios({ url: `${apiurl}/login`, method: "POST", data: value })
             .then((response) => {
                 if (response.status === 200) {
                     try {
@@ -44,12 +44,12 @@ export function Login({settoken}) {
                         const emailid = response.data.emailid;
                         const firstname = response.data.firstname;
                         const lastname = response.data.lastname;
-                        localStorage.setItem("token", token);
-                        localStorage.setItem("emailid", emailid);
-                        localStorage.setItem("firstname", firstname);
-                        localStorage.setItem("lastname", lastname);
+                        sessionStorage.setItem("token", token);
+                        sessionStorage.setItem("emailid", emailid);
+                        sessionStorage.setItem("firstname", firstname);
+                        sessionStorage.setItem("lastname", lastname);
                         settoken(true)
-                        history.push(`/welcomedashboard`)
+                        history.push(`/`)
                     } catch (errors) {
                         console.log("Error is:", errors)
                     }
@@ -62,7 +62,7 @@ export function Login({settoken}) {
             <Card className="login-form-card">
                 <Card.Body>
                     <Form onSubmit={handleSubmit} className="login-form">
-                        <Form.Group className="login-emailid-part" controlId="formBasicEmail">
+                        <Form.Group className="login-form-fields" controlId="formBasicEmail">
 
                             {/* Email field */}
                             <Form.Label>Email address</Form.Label>
@@ -80,7 +80,7 @@ export function Login({settoken}) {
                             </Form.Text>
                         </Form.Group>
 
-                        <Form.Group className="login-password-part" controlId="formBasicPassword">
+                        <Form.Group className="login-form-fields" controlId="formBasicPassword">
 
                             {/* password field */}
                             <Form.Label>Password</Form.Label>
@@ -94,14 +94,16 @@ export function Login({settoken}) {
                             />
                             {errors.password && touched.password ? (<div>{errors.password}</div>) : null}
                         </Form.Group>
+                        <div className='link-login-btn-container'>
+                            {/* links for forget password and signup */}
+                            <Link to="/forgetpassword">Forget password</Link>
+                            <Link to="/signup">Signup</Link>
 
-                        {/* links for forget password and signup */}
-                        <Link to="/forgetpassword">Forget password</Link>
-                        <Link to="/signup">Signup</Link>
+                            <Button className="login-form-button" variant="warning" type="submit">
+                                Submit
+                            </Button>
+                        </div>
 
-                        <Button className="login-form-button" variant="primary" type="submit">
-                            Submit
-                        </Button>
                     </Form>
                 </Card.Body>
             </Card>

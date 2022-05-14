@@ -8,11 +8,12 @@ import * as yup from 'yup';
 import axios from 'axios';
 
 // other file imports
-import { apiurl } from '../apiLink';
+import { apiurl } from '../applicationURL';
 
 // hooks imports
 import { useFormik } from 'formik';
 import { useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 // change password validation schema
 const formValidation = yup.object({
@@ -30,8 +31,11 @@ const formValidation = yup.object({
 
 // forget password component
 export function Changepassword() {
-    const temData = useParams();
-    const token = temData.value;
+
+    const {id} = useParams();
+    console.log(id)
+   
+    const history =useHistory();
 
     // formik functionality
     const { values, errors, touched, handleChange, handleSubmit, handleBlur } = useFormik({
@@ -41,9 +45,15 @@ export function Changepassword() {
     });
 
     // change password request
-    const changepassword = (value) => {
-        axios({ url: `${apiurl}/user/changepassword`, method: "POST",headers:{token}, data: value })
-        .then((response)=>console.log(response))
+    const changepassword = (dataa) => {
+        console.log(dataa)
+        // axios({ url: `${apiurl}/changepassword`, method:"POST",headers:id, data: dataa })
+        axios({url:`${apiurl}/changepassword`,method:"POST",headers:{id},data:dataa})
+        .then((response)=>{
+            if(response.status===200){
+                history.push("/login")
+            }
+        })
     }
 
     return (
@@ -51,7 +61,7 @@ export function Changepassword() {
             <Card classname="changepassword-form-card">
                 <Card.Body>
                     <Form onSubmit={handleSubmit} className="changepassword-form">
-                        <Form.Group className="changepassword-password-part" controlId="formBasicPassword">
+                        <Form.Group className="changepassword-form-fields" controlId="formBasicPassword">
 
                             {/* password field */}
                             <Form.Label>New password</Form.Label>
@@ -66,7 +76,7 @@ export function Changepassword() {
                             {errors.newPassword && touched.newPassword ? (<div>{errors.newPassword}</div>) : null}
                             </Form.Group>
                             
-                            <Form.Group className="changepassword-password-part" controlId="formBasicPassword">
+                            <Form.Group className="changepassword-form-fields" controlId="formBasicPassword">
                             {/* confirm password field */}
                             <Form.Label> Confirm Password</Form.Label>
                             <input
@@ -79,7 +89,7 @@ export function Changepassword() {
                             />
                             {errors.confirmpassword && touched.confirmpassword ? (<div>{errors.confirmpassword}</div>) : null}
                         </Form.Group>
-                        <Button className="changepassword-form-button" variant="primary" type="submit">
+                        <Button className="changepassword-form-btn" variant="warning" type="submit">
                             Submit
                         </Button>
                     </Form>

@@ -12,7 +12,7 @@ import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 // other file imports
-import { apiurl } from '../apiLink.js';
+import { apiurl } from '../applicationURL';
 
 // validation schema
 const formValidation = yup.object({
@@ -60,10 +60,10 @@ export function Signup() {
     // signup api request
     const signup = (values) => {
         try {
-            axios({ url: `${apiurl}/user/signup`, method: "POST", data: values })
+            axios({ url: `${apiurl}/signup`, method: "POST", data: values })
                 .then((response) => {
                     if (response.status === 200) {
-                        history.push("/");
+                        history.push("/login");
                     }
                 })
         }
@@ -74,10 +74,10 @@ export function Signup() {
 
     return (
         <div className="signup-form-container">
-            <Card classname="signup-form-card">
+            <Card className="signup-form-card">
                 <Card.Body>
                     <Form onSubmit={handleSubmit} className="signup-form">
-                        <Form.Group className="signup-firstname-part" controlId="formBasicEmail">
+                        <Form.Group className="signup-form-fields" controlId="formBasicEmail">
 
                             {/* firstname field */}
                             <Form.Label>First name</Form.Label>
@@ -91,7 +91,7 @@ export function Signup() {
                             />
                             {errors.firstname && touched.firstname ? (<div>{errors.firstname}</div>) : null}
                         </Form.Group>
-                        <Form.Group className="signup-lastname-part" controlId="formBasicEmail">
+                        <Form.Group className="signup-form-fields" controlId="formBasicEmail">
 
                             {/* lastname field*/}
                             <Form.Label>Last name</Form.Label>
@@ -106,7 +106,7 @@ export function Signup() {
                             />
                             {errors.lastname && touched.lastname ? (<div>{errors.lastname}</div>) : null}
                         </Form.Group>
-                        <Form.Group className="signup-dob-part" controlId="formBasicEmail">
+                        <Form.Group className="signup-form-fields" controlId="formBasicEmail">
 
                             {/* date of birth field*/}
                             <Form.Label>Date of birth</Form.Label>
@@ -119,7 +119,7 @@ export function Signup() {
                             />
                             {errors.dob && touched.dob ? (<div>{errors.dob}</div>) : null}
                         </Form.Group>
-                        <Form.Group className="signup-emailid-part" controlId="formBasicPassword">
+                        <Form.Group className="signup-form-fields" controlId="formBasicPassword">
 
                             {/* email id field*/}
                             <Form.Label>Email id</Form.Label>
@@ -133,7 +133,7 @@ export function Signup() {
                             />
                             {errors.emailid && touched.emailid ? (<div>{errors.emailid}</div>) : null}
                         </Form.Group>
-                        <Form.Group className="signup-password-part" controlId="formBasicPassword">
+                        <Form.Group className="signup-form-fields" controlId="formBasicPassword">
 
                             {/* password field */}
                             <Form.Label>Password</Form.Label>
@@ -147,7 +147,7 @@ export function Signup() {
                             />
                             {errors.password && touched.password ? (<div>{errors.password}</div>) : null}
                         </Form.Group>
-                        <Form.Group className="signup-confirmPassword-part" controlId="formBasicPassword">
+                        <Form.Group className="signup-form-fields" controlId="formBasicPassword">
 
                             {/* confirm password field */}
                             <Form.Label> Confirm Password</Form.Label>
@@ -161,7 +161,7 @@ export function Signup() {
                             />
                             {errors.confirmpassword && touched.confirmpassword ? (<div>{errors.confirmpassword}</div>) : null}
                         </Form.Group>
-                        <Button className="signup-form-button" variant="primary" type="submit">
+                        <Button className="signup-form-button" variant="warning" type="submit">
                             Submit
                         </Button>
                     </Form>
